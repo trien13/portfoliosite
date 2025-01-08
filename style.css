@@ -1,0 +1,166 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+
+body {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  background: #FAF9F6;
+}
+
+#navleft {
+/*  border: solid black 1px;*/
+  width: 10vw;
+  max-width: 150px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0px 0px 30px;
+  font-family: Arial;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+#navleft a {
+  text-decoration: none;
+  color: #999999;
+}
+
+#navleft a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+
+#main {
+  opacity: 0.9;
+  width: 90vw;
+  height: 1000px;
+/*  border: solid blue 1px;*/
+}
+
+.section__info {
+/*  height: 250px;*/
+  padding: 50px 20px 20px 30px
+
+}
+
+.section__info h1, h3{
+  font-family: Editorial;
+}
+
+.section__info h1 {
+  font-family: Editorial;
+  font-style: italic;
+  font-weight: normal;
+  letter-spacing: 5px;
+}
+.section__info pre {
+  font-family: sfpro;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.section__project {
+  font-family: Editorial;
+/*  border: solid black 1px;*/
+  padding: 20px 20px 20px 30px;
+  display: flex;
+  flex-direction: row;
+}
+.section__project__info {
+/*  border: solid black 1px;*/
+/*  height: auto;*/
+  min-width: 300px;
+  max-width: 310px;
+/*  padding: 10px;*/
+  border-radius: 5px;
+}
+.section__project__info h3 {
+}
+.section__project__info p {
+  font-family: sfpro;
+  margin-top: 10px;
+  font-size: 16px;
+}
+.section__project__mininav {
+  margin-top: 20px;
+}
+
+.section__project__gal {
+/*  border: solid black 1px;*/
+  height: 500px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  margin-left: 10px;
+}
+.section__project__gal img {
+  max-height: 450px;
+  margin-right: 10px;
+  border-radius: 2px;
+}
+.section__project a {
+  font-family: sfpro;
+  font-size: 16px;
+  color: #999999;
+  margin: 0px 5px 0 0 ;
+}
+.section__project a:hover {
+  color: black;
+}
+
+
+
+
+@font-face {
+  font-family: "Editorial";
+  src: url("./otf/PPEditorialOld-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Editorial";
+  src: url("./otf/PPEditorialOld-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Editorial";
+  src: url("./otf/PPEditorialOld-UltraboldItalic.otf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Editorial";
+  src: url("./otf/PPEditorialOld-UltralightItalic.otf") format("truetype");
+  font-weight: light;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Editorial";
+  src: url("./otf/PPEditorialOld-Ultralight.otf") format("truetype");
+  font-weight: light;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "sfpro";
+  src: url("otf/SF-Pro-Display-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trien's portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+<body>
+
+  <div id ="navleft">
+    <a href="">main</a>
+    <a href="">resume</a>
+    <br>
+    <a href="javascript:void(0);" onclick="note();">github</a>
+    <a href="javascript:void(0);" onclick="note();">twitter</a>
+    <a href="javascript:void(0);" onclick="note();">email</a>
+  </div>
+
+  <div id ="main">
+
+    <div class="section__info">
+      <h1>Trien N</h1>
+
+      <h3 style="margin-top: 10px;">Computer science student, Software & Mechatronics Engineer</h3>
+      
+      <pre style="width: 300px; margin-top: 20px;">Currently study computer science at Goldsmiths. I also build robots. I've been working with industrial fabrication equipments for 8 years.
+     
+    </div>
+
+    <hr>
+    <div class="section__project">
+      <h1>Hardware Projects</h1>
+    </div>
+    <hr>
+    <br>
+    <!--hp1-->
+    <div class="section__project">
+        <div class="section__project__info">
+          <h3>Solar Death Ray</h3>
+          <p>2 axis sun following device that keeps the lens the-focal-length away from the object you're trying to burn.</p>
+
+          <p>3d printing components, custom breakout board utilising widely available Arduino microcontroller.</p>
+
+          <div class="section__project__mininav">
+            <a href="javascript:void(0);" onclick="note();">video</a>
+            <a href="javascript:void(0);" onclick="note();">github</a>
+          </div>
+        </div>
+
+        <div class="section__project__gal">
+          <img src="./images/sdr/1.png">
+          <img src="./images/sdr/2.jpg">
+          <img src="./images/sdr/3.jpg">
+        </div>
+    </div> <!--hp1-->
+
+    <!--hp2-->
+     <div class="section__project">
+        <div class="section__project__info">
+          <h3>Actuator Mechanism</h3>
+          <p>Fins and TVC vanes are on the same axis. Connected to servo via linkage. </p> 
+          <p>Could squeeze everything in tighter in hindsight by shifting around the servo placement a bit or having a non-planar linkage</p>
+
+          <div class="section__project__mininav">
+            <a href="javascript:void(0);" onclick="note();">video</a>
+          </div>
+        </div>
+
+        <div class="section__project__gal">
+          <img src="./images/drone/1.gif">
+          <img src="./images/drone/2.png">
+        </div>
+    </div> <!--hp2-->
+
+    <hr>
+    <div class="section__project">
+      <h1>Software Projects</h1>
+    </div>
+    <hr>
+    <br>
+    
+    <!--sp1-->
+     <div class="section__project">
+        <div class="section__project__info">
+          <h3>STMBL Framework</h3>
+
+          <p>I'm the maintainer of Mach3 integration module.</p>
+
+          <p>STMBL is an open source servo drive designed for Retrofitting CNC machines and Robots. </p> 
+          <p> It supports Industrial AC and DC servos with up to 320V and 2kW </p>
+          <p>Currently supported command interfaces are: Mesa Smart-Serial, Step-Dir, Quadrature, Serial </p>
+
+
+          <div class="section__project__mininav">
+            <a href="javascript:void(0);" onclick="note();">github</a>
+          </div>
+        </div>
+
+        <div class="section__project__gal">
+          <img src="./images/stmbl/1.jfif">
+          <img src="./images/stmbl/2.jfif">
+          <img src="./images/stmbl/3.jpg">
+          <img src="./images/stmbl/4.jpg">
+        </div>
+    </div> <!--p3-->
+
+
+    <hr>
+    <div style="height: 100px;">
+      <!--blank padding-->
+    </div>
+   
+
+  </div>
+
+  <script type="text/javascript">
+    note = () => {
+      alert("This is not my actual portfolio site. This portfolio site is a showcase to fulfill specific marking criteria. Thank you.")
+    }
+  </script>
+
+
+</body>
+
+</html>
