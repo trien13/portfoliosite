@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trien's portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+<body>
+
+ 
+
+  <div id ="main">
+
+    <div class="section__info">
+      <h1>Trien Nguyen</h1>
+      <pre style="width: 300px; margin-top: 20px;">Currently studying computer science at Goldsmiths.
+     
+    </div>
+
+    <hr>
+    <div class="section__project__nav">
+      <a href="./index.html">Hardware Projects</a>
+      <a href="./software.html">Software Projects</a>
+      <a href="./final.html">Final Projects</a>
+      <a href="javascript:void(0);" onclick="note()">Resume</a>
+      
+
+    </div>
+    <hr>
+    <br>
+    
+    <!--sp1-->
+     <div class="section__project">
+        <div class="section__project__info" style="min-width: 500px">
+          <h3>Crash Detection System for CNC Machines using Vibration Analysis Techniques and Machine Learning Methods</h3>
+          <p><strong>Author:</strong> Trien Tri Nguyen<br>
+             <strong>Supervisor:</strong> Dr Lahcen Ouarbya<br>
+
+
+          <div class="section__project__mininav">
+            <a href="javascript:void(0);" onclick="note();">link to report</a>
+          </div>
+        </div>
+
+        <div class="section__project__gal" style="height: 300px">
+          <img src="./images/final/mill.jpeg">
+        </div>
+    </div>
+
+      <div class="section__project">
+        <div class="section__project__info" style="min-width: 500px;">
+          <h3>Overview</h3>
+          <p>This project develops a real-time crash detection system for CNC machines using vibration data and machine learning. It utilizes an ADXL345 sensor and models such as GRUs and LightGBM to detect anomalies and prevent damage during machining operations.</p>
+          <br> <br>
+
+           <h3>Methodology</h2>
+          <p>Vibration data is collected during machining, processed into frequency bins, and used to train predictive models. Predictions are compared against real-time signals to detect crashes.</p>
+          <br> <br>
+
+
+          <h3>Key Components</h3>
+          <ul>
+            <li><strong>Sensor:</strong> ADXL345 Accelerometer</li>
+            <li><strong>Machine:</strong> 3-axis desktop CNC 3018</li>
+            <li><strong>Data Processing:</strong> FFT (Fast Fourier Transform)</li>
+            <li><strong>Models:</strong> GRUs (for time-domain), LightGBM (for frequency-domain)</li>
+          </ul>
+   </div>
+
+        <div class="section__project__gal">
+          <img src="./images/final/sys_flowchart.png">
+            <img src="./images/final/adxl345i2c.png">
+            <img src="./images/final/pccncvib.png">
+
+          </div>
+    </div>
+    
+      <div class="section__project">
+        <div class="section__project__info" style="min-width: 500px;">
+
+        <h3>Results</h3>
+        <div style="background-color: #ADD0B3; border-radius: 3px; padding: 5px 20px 15px 20px">  
+        
+          <p><strong>Crash detection accuracy:</strong> Emergency stop triggered within 1.5 mm after impact<br>
+            <br>
+          <strong>LightGBM Model Accuracy:</strong> R² = 0.77 on real-time data</p>
+        </div>
+
+          <br> <br>
+          <h3>Challenges & Future Work</h3>
+          <ul>
+            <li>Low-resolution sensor limited detection accuracy</li>
+            <li>Real-time inference requires optimization</li>
+            <li>Potential improvements with AE sensors and acoustic fingerprinting</li>
+          </ul>
+          <br> <br>
+          <h3>Conclusion</h3>
+          <p>The system demonstrates that vibration analysis, combined with machine learning, can provide scalable and accurate real-time crash detection for CNC machines. Future work aims to extend it to a proactive crash prevention system.</p>
+      </div>
+    </div>
+
+     <div style="height: 500px;">
+      <!--blank padding-->
+    </div>
+      
+    </div> 
+
+
+  
+   
+
+  </div>
+
+  <script type="text/javascript">
+    note = () => {
+      alert("temp portfolio site")
+    }
+
+    
+  // Existing function
+    note = () => {
+      alert("temp portfolio site")
+    }
+
+    // New lightbox function
+    document.querySelectorAll('.section__project__gal img').forEach(img => {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', () => {
+        const overlay = document.createElement('div');
+        overlay.className = 'lightbox-overlay';
+
+        const largeImg = document.createElement('img');
+        largeImg.src = img.src;
+        overlay.appendChild(largeImg);
+
+        overlay.addEventListener('click', () => {
+          document.body.removeChild(overlay);
+        });
+
+        document.body.appendChild(overlay);
+      });
+    });
+  </script>
+
+
+</body>
+
+</html>
