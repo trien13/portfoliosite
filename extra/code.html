@@ -11,7 +11,8 @@
 
 	<span>
 		<a href="javascript:displayCode('vsm');">Vibration Sensor Module Setup<a/>
-		<a href="javascript:displayCode('gui');">GUI<a/>
+		<a href="javascript:displayCode('gui_pre');">GUI1<a/>
+		<a href="javascript:displayCode('gui');">GUI2<a/>
 		<a href="javascript:displayCode('com');">Components<a/>
 		<a href="javascript:displayCode('gru');">Approach 1/grus<a/>
 
@@ -34,6 +35,9 @@ displayCode = (name) => {
 
 	if (path == "vsm") {
 		document.getElementById("codebox").src = "code/vsm.html";
+	}
+	if (path == "gui_pre") {
+		document.getElementById("codebox").src = "code/gui_pre.html";
 	}
 	if (path == "gui") {
 		document.getElementById("codebox").src = "code/gui.html";

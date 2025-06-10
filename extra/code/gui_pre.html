@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-twilight.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <link href="../style.css" rel="stylesheet">  
+<body>
+
+<pre>
+  <code class="language-cpp" style="font-size: 13px;">
+ 
+import tkinter as tk
+import serial
+import csv
+import threading
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import time
+
+def testConnection(monitor):
+    port = input_com.get()
+    baudrate = input_baud.get()
+    
+    try:
+        ser = serial.Serial(port, baudrate)
+        test_data_string = ""
+        ser.write('c'.encode('utf-8'))
+        time.sleep(5)
+
+
+       
+        # for i in range(1):
+        #     monitor.insert(tk.END, f"Received: {decoded_data}\n")
+
+        # monitor.see(tk.END)
+        # monitor.insert(tk.END, f"Good Connection...\n")
+        # monitor.insert(tk.END, f"port: {port} baudrate: {baudrate}\n")
+
+    except Exception as e:
+        monitor.insert(tk.END, f"Bad Connection...\n")
+        monitor.insert(tk.END, f"error: {e}\n")
+        monitor.see(tk.END)
+
+#start reading and logging magnitude data
+def read_serial_data(port, baudrate, monitor):
+    try:
+        ser = serial.Serial(port, baudrate)
+        monitor.insert(tk.END, f" logging magnitude on port: {port} with baudrate: {baudrate}\n")
+        monitor.see(tk.END)
+
+        csv_log = open('serial_log.csv', 'a', newline='')
+        csv_writer = csv.writer(csv_log)
+        
+        while True:
+            if ser.in_waiting > 0:
+                raw_data = ser.readline() 
+                decoded_data = raw_data.decode('utf-8').strip()  
+                monitor.insert(tk.END, decoded_data + '\n')
+                monitor.see(tk.END)
+                csv_writer.writerow([decoded_data])
+                csv_log.flush()
+    except Exception as e:
+        monitor.insert(tk.END, f"Error: {e}\n")
+        monitor.see(tk.END)
+
+# calibrate sensor
+def calibrateSensor(monitor):
+    port = "COM3" #input_com.get()
+    baudrate = "9600" #input_baud.get()
+    ser = serial.Serial(port, baudrate)
+    for i in range(5, 0 , -1):
+        print(i)
+        time.sleep(1)
+    ser.write('c'.encode()) #send calibrate command to microcontroller
+    for i in range(5, 0 , -1):
+        print(i)
+        time.sleep(1)
+
+    while True:
+        if ser.in_waiting > 0:
+            decoded_data = ser.readline().decode('utf-8').strip()
+            monitor.insert(tk.END, decoded_data + '\n')
+            monitor.see(tk.END)
+            break
+        
+# clear serial monitor
+def clearMonitor(monitor):
+    monitor.delete(1.0,tk.END)
+ 
+def start_serial_session(monitor):
+    port = input_com.get()
+    baudrate = input_baud.get()
+    
+    serial_thread = threading.Thread(target=read_serial_data, args=(port, baudrate, monitor))
+    serial_thread.daemon = True
+    serial_thread.start()
+
+def main_gui():
+    global input_com, input_baud, semo
+
+    #APPLICATION WINDOW
+    root = tk.Tk()
+    root.geometry("700x250")
+    root.configure(bg="grey")
+    root.title("Magnitude Logger ©")
+    # root.attributes("-alpha",0.9)
+
+    bgcol = "grey"
+
+    # COM & BAUD RATE SETTING FRAME
+    frame = tk.Frame(root, bd=0, highlightthickness=0).place(x=0,y=0)
+    tk.Label(frame, text="Configuring the serial port and its baudrate:", bg=bgcol, highlightthickness=0, font = ("Arial",10,"italic")).place(x=0,y=0)
+    
+    label_height = 1
+    # COM port input
+    tk.Label(frame, text="Serial Line:", height=label_height, bg=bgcol, anchor='w').place(x=0,y=25)
+    input_com = tk.Entry(frame, width=10, font = ("Courier",12, "bold"))
+    input_com.place(x=70,y=25)
+    
+    # baud rate input
+    tk.Label(frame, text="Baudrate:", height=label_height, bg=bgcol, anchor='w').place(x=0,y=50)
+    input_baud = tk.Entry(frame, width=10, font= ("Courier",12,"bold"))
+    input_baud.place(x=70,y=50)
+    
+    # buttons
+        #left col
+    test_button = tk.Button(frame, text="Test", width=12, height=1,command=lambda: testConnection(semo)).place(x=5,y=80)
+    calibrate_button = tk.Button(frame, text="Calibrate Sensor", width=12, height=1,command=lambda: calibrateSensor(semo)).place(x=5,y=110)
+    clear_button = tk.Button(frame, text="Clear Monitor", width=12, height=1, command=lambda: clearMonitor(semo)).place(x=5, y=140)
+        #right col
+    start_button = tk.Button(frame, text="Start Session",bg="green", width=12, height=1,command=lambda: start_serial_session(semo)).place(x=105, y=80)
+    stop_button = tk.Button(frame, text="Stop Session",bg="red", width=12, height=1).place(x=105, y=110)
+ 
+ 
+    #SERIAL MONITOR
+    semo_frame = tk.Frame(root, bd=0, highlightthickness=0, bg=bgcol).place(x=250,y=0)
+    tk.Label(semo_frame, text="Serial Monitor", bg=bgcol, highlightthickness=0, font = ("Arial",10,"italic")).place(x=300,y=0)
+    semo = tk.Text(semo_frame, bg="black", fg="white", height=10, width=40, font = ("Arial",13,"italic") )
+    semo.place(x=300,y=25)
+    # status = tk.Text(semo_frame,bg="black", fg="green", height= 1, width=40).place(x=300, y=250)
+
+    root.eval('tk::PlaceWindow . center')
+    root.mainloop()
+
+
+if __name__ == '__main__':
+    main_gui()
+
+
+</code>
+</pre>
+
+</body>
+</html>
+
