@@ -1,0 +1,33 @@
+body {
+	display: flex; flex-direction: column;
+}
+
+a {
+	margin: 5px 0px 5px 5px;
+}
+
+iframe {
+	border: solid black 1px;
+}
+#cbc {
+	display: flex; 
+}
+.cbd {
+	display: flex; flex-direction: 
+	border: solid black 1px;
+}
+.codebox {
+	width: 1200px;
+	height: 85vh;
+}
+#content {
+	width: 90vw;
+	height: 80vh;
+}
+
+pre {
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.5em; /* adjust padding if needed */
+    margin: 0 !important;
+  }

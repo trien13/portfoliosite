@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>final project</title>
+	<link href="style.css" rel="stylesheet">  
+
+</head>
+<body>
+	<span>
+			
+		<a href="javascript:displayCode('sia');">System demo<a/>
+		<a href="javascript:displayCode('crashes');">Crashes<a/>
+		<a href="javascript:displayCode('code');">code/scripts<a/>
+
+	</span>
+
+	<iframe src="" class="content" id="content" ></iframe>
+
+
+<script type="text/javascript">
+displayCode = (name) => {
+	var path = name;
+
+	if (path == "code") {
+		document.getElementById("content").src = "code.html";
+	}
+	if (path == "crashes") {
+		document.getElementById("content").src = "crashes.html";
+	}
+
+	if (path == "sia") {
+		document.getElementById("content").src = "sia.html";
+	}
+	
+}
+
+</script>
+
+</body>
+</html>

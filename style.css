@@ -34,10 +34,9 @@ body {
   color: black;
 }
 
-
 #main {
   opacity: 0.9;
-  width: 60vw;
+  width: 70vw;
   height: 1000px;
   min-width: 900px
 /*  border: solid blue 1px;*/
@@ -46,7 +45,6 @@ body {
 .section__info {
 /*  height: 250px;*/
   padding: 50px 20px 20px 30px
-
 }
 
 .section__info h1, 
@@ -67,11 +65,10 @@ body {
   word-wrap: break-word;
 }
 
-
 .section__project__nav {
 /*  border: solid black 1px;*/
   font-size: 1.2rem;
-  padding:  20px 0 20px 0px ;
+  padding:  10px 0 10px 0px ;
   display: flex;
   flex-direction: row;
   justify-content: center;
