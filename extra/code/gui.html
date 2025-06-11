@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-twilight.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <link href="../style.css" rel="stylesheet">  
+<body>
+
+<pre>
+  <code class="language-cpp" style="font-size: 13px;">
+ 
+import tkinter as tk 
+from tkinter import scrolledtext
+from tkinter import ttk
+import threading
+import matplotlib.pyplot as plt
+from components import Sensor
+from components import Machine
+import builtins
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+
+class Gui:
+    def __init__(self, root):
+        # Set up GUI
+        self.root = root
+        self.root.title("Crash Detection System ")
+        app_w = 800
+        app_h = 600
+        screen_w = self.root.winfo_screenwidth()
+        screen_h = self.root.winfo_screenheight()
+        x = int((screen_w / 2)-(app_w/2))
+        y = int((screen_h / 2)-(app_h/2))
+        self.root.geometry(f"{app_w}x{app_h}+{x}+{y}")
+        
+        
+        ### TRAINING FUNCTION ROW ###
+        #############################
+        b_pad = (0, 20) # button padding tuples 
+        pad_y = (0, 5)
+        col_c = 0
+        rol_c = 0
+
+        tf_r_label = tk.Label(root, text=">Training functions", font=("Times 13 italic"))
+        tf_r_label.pack(anchor="w", pady=2,padx=20)
+        # button container
+        self.function_row = tk.Frame(self.root, width= 300)
+        self.function_row.pack(anchor="w", pady=5, padx=20)
+        # estop
+        self.estop_button = tk.Button(self.function_row, text="ESTOP", command=self.machineestop, bg="red", fg="white", font=("Arial 13 bold"))
+        self.estop_button.grid(row=rol_c, column=col_c, padx= b_pad, )
+        col_c += 1
+        # go home
+        self.gohome_button = tk.Button(self.function_row, text="Go to X0 Y0", command=self.homethemachine, anchor="w")
+        self.gohome_button.grid(row=rol_c, column=col_c, padx= b_pad, )
+        col_c += 1
+        # start sensor 
+        self.start_button = tk.Button(self.function_row, text="Start Sensor Reading", command=self.start_sensor_reading)
+        self.start_button.grid(row=rol_c, column=col_c, padx= b_pad,)
+        col_c +=1
+        self.stop_button = tk.Button(self.function_row, text="Stop Sensor Reading", command=self.stop_sensor_thread)
+        self.stop_button.grid(row=rol_c, column=col_c, padx= b_pad, )
+        col_c +=1
+        # start stop autorun
+        self.machine_autorun_button = tk.Button(self.function_row, text="CNC machine autorun", command=self.start_machine_autorun, fg= "green")
+        self.machine_autorun_button.grid(row=rol_c, column=col_c, padx= b_pad)
+        col_c += 1
+        self.stop_machine_autorun_button = tk.Button(self.function_row, text="Stop machine autorun", command=self.stop_machine_autorun, fg= "red")
+        self.stop_machine_autorun_button.grid(row=rol_c, column=col_c, padx= b_pad)
+        col_c += 1
+        
+
+            # END OF FUNCTION ROW #
+        separator = ttk.Separator(root, orient='horizontal')
+        separator.pack(fill='x', padx=10, pady=10)
+
+        ### DECTECTION FUNCTION ROW ###
+        ###############################
+        col_c_d = 0
+        df_r_label = tk.Label(root, text=">Crash Detection functions", font=("Times 13 italic"))
+        df_r_label.pack(anchor="w", pady=2,padx=20)
+
+        self.d_function_row = tk.Frame(self.root)
+        self.d_function_row.pack(anchor="w", pady=5, padx=20)
+
+        self.detect_system_on = tk.Button(self.d_function_row, text="System On", command=self.homethemachine, fg= "green")
+        self.detect_system_on.grid(row=0, column=col_c_d, padx= b_pad)
+        col_c_d += 1
+        self.detect_system_off = tk.Button(self.d_function_row, text="System Off", command=self.homethemachine, fg= "red")
+        self.detect_system_off.grid(row=0, column=col_c_d, padx= b_pad)
+        col_c_d += 1
+        self.system_status_label = tk.Label(self.d_function_row, text="Crash Detection System off ", font=("Arial", 10, "bold"), fg="red",  bd=2, relief="sunken")
+        self.system_status_label.grid(row=0, column=col_c_d, padx= b_pad)
+        col_c_d += 1
+        self.load_model = tk.Button(self.d_function_row, text="Load Model", command=self.open_model)
+        self.load_model.grid(row=0, column=col_c_d, padx= b_pad)
+
+            # END OF DETECTION FUNCTION ROW #
+        separator = ttk.Separator(root, orient='horizontal')
+        separator.pack(fill='x', padx=10, pady=10)
+        
+        ### STATUS INFORMATION ###
+        ##########################
+        status_pad = (0,5)
+
+        df_r_label = tk.Label(root, text=">Status", font=("Times 13 italic"))
+        df_r_label.pack(anchor="w", pady=2,padx=20)
+
+        self.status_frame = tk.Frame(self.root,)
+        self.status_frame.pack(anchor="w", pady=5, padx=20)
+
+        self.machine_status_label = tk.Label(self.status_frame, text="Machine status: Normal ", font=("Arial", 10, "bold"), fg="green",  bd=2, relief="sunken")
+        self.machine_status_label.pack(pady=status_pad, anchor="w")
+        self.machine_serial_label = tk.Label(self.status_frame, text="Machine serial: ", font=("Arial", 10, "bold"), fg="blue",  bd=2, relief="sunken")
+        self.machine_serial_label.pack(pady=status_pad, anchor="w")
+
+      
+            # END OF STATUS INFORMATION #
+        separator = ttk.Separator(root, orient='horizontal')
+        separator.pack(fill='x', padx=10, pady=10)
+
+        ### PLOT AND CONSOLE ###
+        ##########################
+
+        self.visual_frame = tk.Frame(self.root,)
+        self.visual_frame.pack(anchor="w", pady=5, padx=20)
+
+        self.log_box = scrolledtext.ScrolledText(self.visual_frame, wrap=tk.WORD, width=60, height=15, font=("Arial 7"))
+        self.log_box.grid(row=0, column=0, padx= (0,10))
+        self.original_print = print
+        self.redirect_print()
+        
+        #plot fft freqs 
+        self.fig = Figure(figsize=(3, 2), dpi=100)
+        self.ax = self.fig.add_subplot(111)
+        self.ax.set_ylim(0, 2)
+        self.ax.set_xlim(0, 32) 
+        self.bar_plot = self.ax.bar(range(32), [0]*32)
+
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.visual_frame)
+        self.canvas.get_tk_widget().grid(row=0, column=1, padx= (0,20))
+        self.canvas.draw()
+
+        # Setup machine and sensor
+        self.cnc = Machine("COM51", 115200, gui=self)
+        self.cnc.connect()
+        self.adxl345 = Sensor("COM5", 115200, self.cnc, gui=self)
+        self.adxl345.connect()
+
+        #route flow of split com port
+        # hub4com --baud=115200 --octs=off --route=All:All \\.\COM6 \\.\COM91 \\.\COM93
+        self.routeflow_thread = threading.Thread(target=self.cnc.routeflow, daemon=True)
+        self.routeflow_thread.start()
+    
+    def log(self, text):
+        self.log_box.insert(tk.END, str(text) + "\n")
+        self.log_box.see(tk.END)
+    
+    # write print() 
+    def redirect_print(self):
+        def print2(mess, sep=" ", end= "\n",file= None, flush=False):
+            message = " ".join(map(str, mess))
+            self.log(message)
+            self.original_print(mess,sep=sep, end=end,file=file, flush=file )
+        builtins.print = print2
+
+    def homethemachine (self): 
+        self.cnc.gohome()
+    def machineestop (self):
+        self.cnc.estop()
+
+    def start_machine_autorun (self):
+        self.machine_autorun_thread = threading.Thread(target=self.cnc.autorun, daemon=True)
+        self.machine_autorun_thread.start()
+        self.log("Machine autorun started.")
+
+    def stop_machine_autorun(self):
+        self.cnc.stop_autorun()
+        self.log("Machine autorun stopped.")
+    
+    # sensor read
+    def start_sensor_reading(self):
+        self.adxl345.restart_reading()
+        self.sensor_thread = threading.Thread(target=self.adxl345.read_raw, daemon=True)
+        self.sensor_thread.start()
+        # self.start_button.config(state='disabled')
+        # self.stop_button.config(state='normal')
+        self.log("Sensor reading started.")
+
+    def stop_sensor_thread(self):
+        self.adxl345.stop_reading()
+        # self.start_button.config(state='normal')
+        # self.stop_button.config(state='disabled')
+        self.log("Sensor reading stopped.")
+
+    def open_model(self):
+        file_path = tk.filedialog.askopenfilename(title="Select a file", filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
+        if file_path:
+            print(f"File selected: {file_path}")
+    
+    ### update statuses
+    def update_system(self, new_sys_status):
+        self.system_status(self, new_sys_status)
+    def update_machine_status(self, new_status):
+        self.machine_status_label.config(text="Machine respones: " + new_status)
+    def update_machine_serial(self, new_serial):
+        self.machine_serial_label.config(text="Machine respones: " + new_serial)
+import os
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Gui(root)
+    root.mainloop()
+
+    # hub4com --baud=115200 --octs=off --route=All:All \\.\COM6 \\.\COM91 \\.\COM93
+
+
+</code>
+</pre>
+
+</body>
+</html>
+
